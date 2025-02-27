@@ -30,9 +30,16 @@ public class Autor {
     @Column(name = "nacionalidade", length = 50, nullable = false)
     private String nacionalidade;
 
-   // @OneToMany(mappedBy = "autor")
-    @Transient
+
+    public Autor() {
+
+    }
+
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    //@Transient
     private List<Livro> livros;
+
 
     public String getNome() {
         return nome;
@@ -66,6 +73,10 @@ public class Autor {
         this.livros = livros;
     }
 
+    public void setAutor(Autor autor) {
+    }
+
+
     @Override
     public String toString() {
         return "Autor{" +
@@ -75,4 +86,5 @@ public class Autor {
                 ", livros=" + livros +
                 '}';
     }
+
 }

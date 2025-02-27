@@ -1,11 +1,15 @@
 package io.github.exemple.library.repository;
 
 import io.github.exemple.library.model.Autor;
+import io.github.exemple.library.model.GeneroLivro;
+import io.github.exemple.library.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,6 +19,9 @@ public class AutorRepositoryTest {
 
     @Autowired
     AutorRepository repository;
+
+    @Autowired
+    LivroRepository livroRepository;
 
     @Test
     public void salvarTest(){
@@ -69,5 +76,37 @@ public class AutorRepositoryTest {
     // repository.deleteById(Maria);
 
 //    }
+    @Test
+    void salvarAutorComLivrosTest(){
+        Autor autor = new Autor();
+        autor.setNome("Rodrigo");
+        autor.setNacionalidade("Brasileiro");
+        autor.setDataNascimento(LocalDate.of(1987, 8 , 9));
+        autor.setAutor(autor);
+
+
+        Livro livro = new Livro();
+        livro.setIsdn("98806-6184");
+        livro.setPreco(BigDecimal.valueOf(200));
+        livro.setGenero(GeneroLivro.FICCAO);
+        livro.setTitulo("A volta dos de não foram");
+        livro.setDataPublicacao(LocalDate.of(1999, 3, 2));
+        livro.setAutor(autor);
+
+        Livro livro2 = new Livro();
+        livro2.setIsdn("8987-0909");
+        livro2.setPreco(BigDecimal.valueOf(150));
+        livro2.setGenero(GeneroLivro.MISTERIO);
+        livro2.setTitulo("Vamos fugir");
+        livro2.setDataPublicacao(LocalDate.of(1980, 1, 2));
+        livro2.setAutor(autor);
+        autor.setLivros(new ArrayList<>());
+        autor.getLivros().add(livro);
+        autor.getLivros().add(livro2);
+
+        repository.save(autor);
+
+        livroRepository.saveAll(autor.getLivros());
+    }
 }
 
