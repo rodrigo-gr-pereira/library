@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "livro")
 @Data
-
+@ToString(exclude = "autor")
 //@Getter@Setter
 //@ToString
 //@EqualsAndHashCode
