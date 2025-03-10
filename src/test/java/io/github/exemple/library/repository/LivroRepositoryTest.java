@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -113,6 +114,27 @@ class LivroRepositoryTest {
 
        // System.out.println("Autor: ");
         //System.out.println(livro.getAutor().getNome());
+    }
+
+    @Test
+    void pesquisaPorTituloTest(){
+        List<Livro> lista = repository.findByTitulo("A volta dos de não foram");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisaPorISDNTest(){
+        List<Livro> lista = repository.findByIsdn("8987-0909");
+       lista.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisaPorTituloEPrecoTest(){
+        var preco = BigDecimal.valueOf(150.00);
+        var tituloPesquisa = "A volta dos de não foram";
+
+        List<Livro> lista = repository.findByTituloAndPreco(tituloPesquisa, preco);
+        lista.forEach(System.out::println);
     }
 }
 
