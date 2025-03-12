@@ -6,12 +6,15 @@ import io.github.exemple.library.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+
 
 @SpringBootTest
 class LivroRepositoryTest {
@@ -136,5 +139,34 @@ class LivroRepositoryTest {
         List<Livro> lista = repository.findByTituloAndPreco(tituloPesquisa, preco);
         lista.forEach(System.out::println);
     }
+
+    @Test
+    void listarLivrosComQueryJPQL(){
+        var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    void listarAutoresDosLivros(){
+        var resultado = repository.listarAutoresDoslivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    void listarTitulosNaoRepetidosDosLivros(){
+        var resultado = repository.listarNomesDiferenteslivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    void listarGenerosDeLivrosAutoresBrasileiros(){
+        var resultado = repository.listarGenerosDeAutoresBrasileiros();
+        resultado.forEach(System.out::println);
+    }
+
+
 }
 
