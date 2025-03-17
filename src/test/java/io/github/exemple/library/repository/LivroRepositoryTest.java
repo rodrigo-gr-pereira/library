@@ -6,7 +6,6 @@ import io.github.exemple.library.model.Livro;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -28,7 +27,7 @@ class LivroRepositoryTest {
     @Test
     void salvarTest(){
         Livro livro = new Livro();
-        livro.setIsdn("98807-9090");
+        livro.setIsbn("98807-9090");
         livro.setPreco(BigDecimal.valueOf(100));
         livro.setGenero(GeneroLivro.FICCAO);
         livro.setTitulo("OFO");
@@ -46,7 +45,7 @@ class LivroRepositoryTest {
     @Test
     void salvarAutorELivroTest(){
         Livro livro = new Livro();
-        livro.setIsdn("98807-9090");
+        livro.setIsbn("98807-9090");
         livro.setPreco(BigDecimal.valueOf(100));
         livro.setGenero(GeneroLivro.FICCAO);
         livro.setTitulo("Terceiro Livro");
@@ -63,19 +62,20 @@ class LivroRepositoryTest {
 
         repository.save(livro);
     }
+
     @Test
-    void salvarCascateTest(){
+    void salvarCascadeTest(){
         Livro livro = new Livro();
-        livro.setIsdn("98807-9090");
+        livro.setIsbn("90887-84874");
         livro.setPreco(BigDecimal.valueOf(100));
         livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("OFO");
+        livro.setTitulo("Outro Livro");
         livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
 
         Autor autor = new Autor();
-        autor.setNome("Joao");
+        autor.setNome("João");
         autor.setNacionalidade("Brasileira");
-        autor.setDataNascimento(LocalDate.of(1977, 12, 31));
+        autor.setDataNascimento(LocalDate.of(1951, 1, 31));
 
         livro.setAutor(autor);
 
@@ -84,10 +84,10 @@ class LivroRepositoryTest {
 
     @Test
     void  atualizarAutorDoLivro(){
-        UUID id = UUID.fromString("df3e1e1a-6e2b-46f5-b886-ee314c90d199");
+        UUID id = UUID.fromString("47e153b8-2d4c-4145-a02a-4c72e40638e0");
         var livroParaAtualizar = repository.findById(id).orElse(null);
 
-        UUID idAutor = UUID.fromString("9300d739-3c70-4755-ae76-a3e66bb7a378");
+        UUID idAutor = UUID.fromString("ee932dda-3ed0-42e7-af7d-dffdd9cd07a3");
         Autor maria = autorRepository.findById(idAutor).orElse(null);
 
         livroParaAtualizar.setAutor(maria);
@@ -97,7 +97,7 @@ class LivroRepositoryTest {
 
     @Test
     void deletar(){
-        UUID id = UUID.fromString("df3e1e1a-6e2b-46f5-b886-ee314c90d199");
+        UUID id = UUID.fromString("ee932dda-3ed0-42e7-af7d-dffdd9cd07a3");
         repository.deleteById(id);
     }
 
@@ -110,7 +110,7 @@ class LivroRepositoryTest {
     @Test
     @Transactional
     void buscarLivroTest(){
-        UUID id = UUID.fromString("e80435b2-9dc5-4a96-943e-6ce924f65bcd");
+        UUID id = UUID.fromString("e4a87991-bcf1-4293-8fb7-dc9ea8eb182c");
         Livro livro = repository.findById(id).orElse(null);
         System.out.println("Livro: ");
         System.out.println(livro.getTitulo());
@@ -127,7 +127,7 @@ class LivroRepositoryTest {
 
     @Test
     void pesquisaPorISDNTest(){
-        List<Livro> lista = repository.findByIsdn("8987-0909");
+        List<Livro> lista = repository.findByIsbn("8987-0909");
        lista.forEach(System.out::println);
     }
 
@@ -143,30 +143,46 @@ class LivroRepositoryTest {
     @Test
     void listarLivrosComQueryJPQL(){
         var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
-        resultado.forEach(System.out::println);
     }
 
     @Test
-    @Transactional
     void listarAutoresDosLivros(){
-        var resultado = repository.listarAutoresDoslivros();
+        var resultado = repository.listarAutoresDosLivros();
         resultado.forEach(System.out::println);
     }
 
     @Test
-    @Transactional
     void listarTitulosNaoRepetidosDosLivros(){
-        var resultado = repository.listarNomesDiferenteslivros();
+        var resultado = repository.listarNomesDiferentesLivros();
         resultado.forEach(System.out::println);
     }
 
     @Test
-    @Transactional
     void listarGenerosDeLivrosAutoresBrasileiros(){
-        var resultado = repository.listarGenerosDeAutoresBrasileiros();
+        var resultado = repository.listarGenerosAutoresBrasileiros();
         resultado.forEach(System.out::println);
     }
 
+    @Test
+    void listarPorGeneroQueryParamTest(){
+        var resultado = repository.findByGenero(GeneroLivro.MISTERIO, "preco");
+        resultado.forEach(System.out::println);
+    }
 
+    @Test
+    void listarPorGeneroPositionalParamTest(){
+        var resultado = repository.findByGeneroPositionalParameters("preco", GeneroLivro.MISTERIO);
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void deletePorGeneroTest(){
+        repository.deleteByGenero(GeneroLivro.CIENCIA);
+    }
+
+    @Test
+    void updateDataPublicacaoTest(){
+        repository.updateDataPublicacao(LocalDate.of(2000,1,1));
+    }
 }
 

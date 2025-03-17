@@ -83,11 +83,11 @@ public class AutorRepositoryTest {
         autor.setNome("Rodrigo");
         autor.setNacionalidade("Brasileiro");
         autor.setDataNascimento(LocalDate.of(1987, 8 , 9));
-        autor.setAutor(autor);
+
 
 
         Livro livro = new Livro();
-        livro.setIsdn("98806-6184");
+        livro.setIsbn("98806-6184");
         livro.setPreco(BigDecimal.valueOf(200));
         livro.setGenero(GeneroLivro.FICCAO);
         livro.setTitulo("A volta dos de não foram");
@@ -95,7 +95,7 @@ public class AutorRepositoryTest {
         livro.setAutor(autor);
 
         Livro livro2 = new Livro();
-        livro2.setIsdn("8987-0909");
+        livro2.setIsbn("8987-0909");
         livro2.setPreco(BigDecimal.valueOf(150));
         livro2.setGenero(GeneroLivro.MISTERIO);
         livro2.setTitulo("Vamos fugir");

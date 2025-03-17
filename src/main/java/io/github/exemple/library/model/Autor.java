@@ -17,11 +17,11 @@ import java.util.UUID;
 public class Autor {
 
     @Id
-    @Column(name = "id", length = 100, nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
     @Column(name = "data_nascimento", nullable = false)
@@ -30,16 +30,13 @@ public class Autor {
     @Column(name = "nacionalidade", length = 50, nullable = false)
     private String nacionalidade;
 
-
-    public Autor() {
-
+    public UUID getId() {
+        return id;
     }
 
-
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //@Transient
-    private List<Livro> livros;
-
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -73,19 +70,6 @@ public class Autor {
         this.livros = livros;
     }
 
-    public void setAutor(Autor autor) {
-    }
-
-
-    @Override
-    public String toString() {
-        return "Autor{" +
-                "nome='" + nome + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", nacionalidade='" + nacionalidade + '\'' +
-                ", livros=" + livros +
-                '}';
-    }
-
-
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Livro> livros;
 }
