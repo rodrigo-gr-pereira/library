@@ -18,4 +18,6 @@ public record AutorDTO(
         autor.setNacionalidade(this.nacionalidade);
         return autor;
     }
+
+
 }
