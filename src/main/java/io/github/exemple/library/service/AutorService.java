@@ -29,6 +29,13 @@ public class AutorService {
         repository.delete(autor);
     }
 
+    public Autor atualizar(Autor autor){
+        if (autor.getId() == null){
+            throw new IllegalArgumentException("Para atualizar e necessario que o autor já esteja na base");
+        }
+        return  repository.save(autor);
+    }
+
     public List<Autor> pesquisa(String nome, String nacionalidade){
         if (nome != null && nacionalidade != null){
            return repository.findByNomeAndNacionalidade(nome, nacionalidade);
