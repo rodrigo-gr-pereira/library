@@ -1,7 +1,11 @@
 package io.github.exemple.library.service;
 
+import io.github.exemple.library.exceptions.OperacaoNaopermitidaException;
 import io.github.exemple.library.model.Autor;
 import io.github.exemple.library.repository.AutorRepository;
+import io.github.exemple.library.repository.LivroRepository;
+import io.github.exemple.library.validator.AutorValidador;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,15 +13,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AutorService {
 
     private final AutorRepository repository;
-
-    public AutorService(AutorRepository repository){
-        this.repository = repository;
-    }
+    private final AutorValidador validador;
+    private final LivroRepository livroRepository;
 
     public Autor salvar(Autor autor){
+        validador.validar(autor);
         return  repository.save(autor);
     }
 
@@ -26,6 +30,9 @@ public class AutorService {
     }
 
     public void deletar(Autor autor){
+        if (possuiLivro(autor)){
+           throw new OperacaoNaopermitidaException("Não é permitido excluir um autpr que possui livros cadastrados");
+        }
         repository.delete(autor);
     }
 
@@ -33,6 +40,7 @@ public class AutorService {
         if (autor.getId() == null){
             throw new IllegalArgumentException("Para atualizar e necessario que o autor já esteja na base");
         }
+        validador.validar(autor);
         return  repository.save(autor);
     }
 
@@ -48,5 +56,8 @@ public class AutorService {
         }
 
             return repository.findAll();
+    }
+    public boolean possuiLivro(Autor autor){
+        return livroRepository.existsByAutor(autor);
     }
 }
