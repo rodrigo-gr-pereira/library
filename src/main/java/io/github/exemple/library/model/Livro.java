@@ -2,15 +2,20 @@ package io.github.exemple.library.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "livro")
 @Data
 @ToString(exclude = "autor")
+@EntityListeners(AuditingEntityListener.class)
 //@Getter@Setter
 //@ToString
 //@EqualsAndHashCode
@@ -43,8 +48,20 @@ public class Livro {
 
     @ManyToOne(
 //            cascade = CascadeType.ALL,
-          //  fetch = FetchType.LAZY
+            fetch = FetchType.LAZY
     )
     @JoinColumn(name = "id_autor")
     private Autor autor;
+
+    @CreatedDate
+    @Column(name = "data_cadastro")
+    private LocalDateTime dataCadastro;
+
+    @LastModifiedDate
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
+
+  //  @ManyToOne
+//    @JoinColumn(name = "id_usuario")
+    //private Usuario usuario;
 }
