@@ -1,6 +1,7 @@
 package io.github.exemple.library.service;
 
 
+import io.github.exemple.library.model.GeneroLivro;
 import io.github.exemple.library.model.Livro;
 import io.github.exemple.library.repository.LivroRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class LivroService {
 
     //isbn, titulo, nome autor, genero, ano de publicacao
     public List<Livro> pesquisa(
-            String isbn, String titulo, String nomeAutor, String genero, Integer anoPublicacao){
+            String isbn, String titulo, String nomeAutor, GeneroLivro genero, Integer anoPublicacao){
 
         // select * from livro where isbn = :isbn and nomeAutor =
      //   Specification<Livro> specs = Specification
@@ -56,8 +57,13 @@ public class LivroService {
         }
 
         if(genero != null){
-            specs = specs.and(generoEquals(genero));
+            specs = specs.and(generoEqual(genero));
         }
+
+        if(anoPublicacao != null){
+            specs = specs.and(anoPublicacaoEqual(anoPublicacao));
+        }
+
 
         return repository.findAll(specs);
     }

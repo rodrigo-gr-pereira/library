@@ -41,7 +41,7 @@ public class Livro {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "genero", length = 30, nullable = false)
-    private String genero;
+    private GeneroLivro genero;
 
     @Column(name = "preco", precision = 18, scale = 2)
     private BigDecimal preco;
