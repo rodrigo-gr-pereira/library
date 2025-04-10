@@ -46,6 +46,14 @@ public class Livro {
     @Column(name = "preco", precision = 18, scale = 2)
     private BigDecimal preco;
 
+    public GeneroLivro getGenero() {
+        return genero;
+    }
+
+    public void setGenero(GeneroLivro genero) {
+        this.genero = genero;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -86,6 +94,7 @@ public class Livro {
     public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
+
 
     public Autor getAutor() {
         return autor;
