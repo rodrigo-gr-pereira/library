@@ -4,6 +4,7 @@ package io.github.exemple.library.service;
 import io.github.exemple.library.model.GeneroLivro;
 import io.github.exemple.library.model.Livro;
 import io.github.exemple.library.repository.LivroRepository;
+import io.github.exemple.library.validator.LivroValidador;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,13 @@ import static io.github.exemple.library.repository.specs.LivroSpecs.*;
 public class LivroService {
 
     private final LivroRepository repository;
+    private final LivroValidador validador;
+
 
     public Livro salvar(Livro livro) {
+        validador.validar(livro);
         return  repository.save(livro);
+
     }
 
     public Optional<Livro> obterPorId(UUID id){
@@ -71,6 +76,8 @@ public class LivroService {
         if(livro.getId() == null){
             throw new IllegalArgumentException("Para atualizar, é necessário que o livro já esteja salvo na base.");
         }
+
+        validador.validar(livro);
         repository.save(livro);
         }
 }
