@@ -2,6 +2,7 @@ package io.github.exemple.library.controller.common;
 
 import io.github.exemple.library.controller.dto.ErroCampo;
 import io.github.exemple.library.controller.dto.ErroResposta;
+import io.github.exemple.library.exceptions.CampoInvalidoException;
 import io.github.exemple.library.exceptions.OperacaoNaopermitidaException;
 import io.github.exemple.library.exceptions.RegistroDuplicadoException;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,15 @@ public class GlobalExpectionHandler {
     public ErroResposta handleOperacaoNaoPermitidaException(
             OperacaoNaopermitidaException e){
         return ErroResposta.respostaPadrao(e.getMessage());
+    }
+
+    @ExceptionHandler(CampoInvalidoException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErroResposta handleCampoInvalidoException(CampoInvalidoException e){
+        return new ErroResposta(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Erro de validação.",
+                List.of(new ErroCampo(e.getCampo(), e.getMessage())));
     }
 
     @ExceptionHandler(RuntimeException.class)
